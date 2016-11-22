@@ -49,6 +49,7 @@ public class RuleSystemDroolsImpl implements RuleSystemDroolsInterface, IActuato
 	Commander commander = new Commander();
 	SendEmail mail = new SendEmail();
 	
+	// BY Shah, File at Resource path doesn't exist --------------------->
 	public static String drlResourcesPath = "/opt/felix/drools.drl";
 	
 
@@ -62,7 +63,9 @@ public class RuleSystemDroolsImpl implements RuleSystemDroolsInterface, IActuato
 		if (os != null && os.startsWith("Windows")) {
 			drlResourcesPath = "c:/opt/felix/drools.drl";
 		}
+		// BY Shah, There is also a need to define drlResourcesPath for other operating Systems for precise configurations --------------------->
 		
+		logger.info("##############RuleSystemDroolsImpl :: 1");
 		kSession = createKieSession();
 		
 		/*
@@ -73,7 +76,7 @@ public class RuleSystemDroolsImpl implements RuleSystemDroolsInterface, IActuato
 		kSession.setGlobal("dblCommand",dblCommand );
 		kSession.setGlobal("commander", commander);
 		kSession.setGlobal("mail", mail);
-		logger.info("##############Logging works");
+		logger.info("##############RuleSystemDroolsImpl :: 2");
 		
 	}
 
@@ -143,20 +146,25 @@ public class RuleSystemDroolsImpl implements RuleSystemDroolsInterface, IActuato
 //	}
 	
 	public static KieSession createKieSession() {
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 1");
 		KieServices ks = KieServices.Factory.get();
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 2");
 		KieContainer kcontainer = createKieContainer(ks);
 
 		// Configure and create the KieBase
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 3");
 		KieBaseConfiguration kbconf = ks.newKieBaseConfiguration();
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 4");
 		KieBase kbase = kcontainer.newKieBase(kbconf);
 
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 5");
 		// Configure and create the KieSession
 		KieSessionConfiguration ksconf = ks.newKieSessionConfiguration();
 
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 6");
 		ksconf.setOption( ClockTypeOption.get(ClockType.REALTIME_CLOCK.getId()));
 
-		logger.info("##############Logging works");
-		System.out.println("returning from createKieSession method");
+		logger.info("##############RuleSystemDroolsImpl.createKieSession() :: 7");
 		return kbase.newKieSession(ksconf, null);
 	}
 	/**
@@ -171,31 +179,34 @@ public class RuleSystemDroolsImpl implements RuleSystemDroolsInterface, IActuato
 	 */
 	private static KieContainer createKieContainer(KieServices ks) {
 		// Create the in-memory File System and add the resources files to it
+		logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 1");
 		KieFileSystem kfs = ks.newKieFileSystem();
 
 		// in case of reading multiple drl files
 
 		//        for (String path : drlResourcesPaths) {
 		//        	String path = drlResourcesPath;
-		logger.info("##############Logging works");
+		logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 2");
 		System.out.println(drlResourcesPath);
+		
 		kfs.write(ResourceFactory.newFileResource(drlResourcesPath));
-
+		logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 3");
+		
 		//        }
 
 		// Create the builder for the resources of the File System
 		KieBuilder kbuilder = ks.newKieBuilder(kfs);
-			// Build the Kie Bases
+		logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 4");
+		// Build the Kie Bases
 		kbuilder.buildAll();
 				// Check for errors
 		if (kbuilder.getResults().hasMessages(Level.ERROR)) {
-			System.out.println(kbuilder.getResults().toString());
+			logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 5 :: " + kbuilder.getResults().toString());
 			throw new IllegalArgumentException(kbuilder.getResults().toString());
 		}
 		// Get the Release ID (mvn style: groupId, artifactId,version)
 		ReleaseId relId = kbuilder.getKieModule().getReleaseId();
-		logger.info("##############Logging works");
-		System.out.println("returning from createKieContainer method");
+		logger.info("##############RuleSystemDroolsImpl.createKieContainer(ks) :: 6");
 
 		// Create the Container, wrapping the KieModule with the given ReleaseId
 		return ks.newKieContainer(relId);

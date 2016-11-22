@@ -348,13 +348,13 @@
 
 		<!-- <module>meterpush.api</module> <module>meterpush.impl</module> <module>meterpush.test</module> -->
 
-		<module>trader.api</module>
+		<!-- <module>trader.api</module>
 		<module>trader.impl</module>
 		<module>trader.test</module>
 
         <module>optimizer.api</module>
 		<module>optimizer.impl</module>
-		<module>optimizer.test</module>
+		<module>optimizer.test</module> -->
 
         <module>gamification.api</module>
         <module>gamification.impl</module>

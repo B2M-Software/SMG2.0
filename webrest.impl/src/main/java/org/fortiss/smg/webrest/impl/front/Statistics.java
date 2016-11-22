@@ -55,6 +55,7 @@ public class Statistics {
 		List<DoublePoint> doubleDataPt;
 
 		try {
+			
 			doubleDataPt = BundleFactory.getInformationBroker()
 					.getDoubleValue(deviceID, from, to);
 		} catch (TimeoutException e) {

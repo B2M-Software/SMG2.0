@@ -22,7 +22,6 @@ public class HealthOfServer {
 			MediaType.TEXT_PLAIN })
 	@Path("/online")
 	public String user(@PathParam("devid") String user) {
-
 		return "200";
 	}
 

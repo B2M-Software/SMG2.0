@@ -199,8 +199,9 @@ public class PersistencyQuery implements InformationBrokerInterface {
 			 * OLD DB for Analyzer use BooleanEvent_Table
 			 * convert long to SQLtimestamp
 			 */
-			result = getBoolValue(dev.getWrapperId(), from, to);
+			result = getBoolValue(dev.getWrapperId(), from, to);			
 
+			logger.warn("PersistencyQuery.getDoubleValue : ************************************** 1");
 		}
 
 
@@ -212,10 +213,9 @@ public class PersistencyQuery implements InformationBrokerInterface {
 
 			result = getDoubleValueOld(dev.getWrapperId(), SIUnitType.valueOf(dev.getDevid()), from, to);
 
+			logger.warn("PersistencyQuery.getDoubleValue : ************************************** 2");
 		}
 		else {
-
-
 
 			if (from == to) {
 				logger.trace("PersistencyQuery: getDoubleValue using key "
@@ -253,6 +253,8 @@ public class PersistencyQuery implements InformationBrokerInterface {
 							// ps.setTimestamp(3, translateDateToSQLTimeStamp(to));
 							logger.debug("PersistencyLog: DB Query "
 									+ ps.toString());
+							
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 4 :: " + ps.toString());
 						} else {
 
 							ps = dbutil
@@ -278,21 +280,31 @@ public class PersistencyQuery implements InformationBrokerInterface {
 									+ ps.toString());
 							// System.out.println("PersistencyQuery: DB Query: " +
 							// ps.toString());
+
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 5 :: " + ps.toString());
 						}
 
 						ResultSet queryResult = ps.executeQuery();
 
+						logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: " + queryResult.toString());
+						logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 0 :: " + queryResult.getRow());
 						while (queryResult.next()) {
-							double value = queryResult.getDouble("value");
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 1");
 
+							double value = queryResult.getDouble("value");
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 2 :: " + value);
+							
 							double maxAbsError = queryResult
 									.getDouble("maxAbsError");
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 3 :: " + maxAbsError);
+							
 							Long timestamp = queryResult.getLong("timestamp");
-
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 4 :: " + timestamp);
 
 							DoublePoint point = new DoublePoint(value, maxAbsError,
 									timestamp);
-
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 6 :: 5 :: " + point.toString());
+							
 							result.add(point);
 							/*
 							 * as at least one result was not in cache, store them
@@ -302,6 +314,8 @@ public class PersistencyQuery implements InformationBrokerInterface {
 								localCacheManager.doubleCache.store(new CacheKey(
 										dev.getDevid(), dev.getWrapperId()), point);
 							}
+							
+							logger.warn("PersistencyQuery.getDoubleValue : ************************************** 7 :: " + queryResult.getRow());
 
 						}
 						ps.close();
@@ -315,7 +329,7 @@ public class PersistencyQuery implements InformationBrokerInterface {
 			}
 		}
 		if (result.isEmpty()) {
-			logger.warn("PersistencyQuery: Requested Object (" + dev
+			logger.warn("PersistencyQuery.getDoubleValue : Requested Object (" + dev
 					+ ") not in Database - returning null");
 			// Sebi: dirty fix, but we can't return null because then we get a
 			// javax.xml.ws.soap.SOAPFaultException: Error reading
@@ -433,7 +447,7 @@ public class PersistencyQuery implements InformationBrokerInterface {
 			}
 		}
 		if (result.isEmpty()) {
-			logger.warn("PersistencyQuery: Requested Object (" + dev
+			logger.warn("PersistencyQuery.getDoubleValueWithLong : Requested Object (" + dev
 					+ ") not in Database - returning null");
 			// Sebi: dirty fix, but we can't return null because then we get a
 			// javax.xml.ws.soap.SOAPFaultException: Error reading

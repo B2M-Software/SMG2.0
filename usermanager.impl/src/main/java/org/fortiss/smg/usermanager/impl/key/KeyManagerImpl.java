@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 public class KeyManagerImpl implements KeyManagerInterface {
 
 	public static final String DB_NAME = "UserManager_Devices";
+	
 	private IDatabase database;
 	private static Logger logger = org.slf4j.LoggerFactory
 			.getLogger(KeyManagerImpl.class);
