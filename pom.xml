@@ -368,6 +368,7 @@
 		<module>websocket.impl</module>
 		<module>websocket.test</module>
 
+		<module>client.openweathermap.impl</module>
 	</modules>
 
 
