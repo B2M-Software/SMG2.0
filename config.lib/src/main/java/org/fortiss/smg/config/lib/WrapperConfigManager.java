@@ -27,6 +27,7 @@ public class WrapperConfigManager {
     private static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WrapperConfigManager.class);
     
 	
+ // Syed Ashfaq Hussain Shah ----------------------------- file path is also set via ActuaterMasterImpl
 	String fileName = "/opt/smg2/wrapperconfig.xml";
 	
 	
@@ -55,6 +56,7 @@ public class WrapperConfigManager {
 		return instance;
 	}
 	
+	// Syed Ashfaq Hussain Shah ----------------------------- file path is also set via ActuaterMasterImpl
 	public void setConfigPath(String path) {
 		fileName = path;
 		parseConfig();
