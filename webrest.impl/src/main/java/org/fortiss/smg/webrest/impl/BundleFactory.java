@@ -35,50 +35,32 @@ public class BundleFactory {
 				InformationBrokerInterface.class,
 				InformationBrokerQueueNames.getQueryQueue(), 5000);
 
-		System.out.print("!!1!!");
-		
 		broker = clientInfo.init();
-		
-		System.out.print("!!2!!");
-		
+
 		RabbitRPCProxy<KeyManagerInterface> clientKeyInfo = new RabbitRPCProxy<KeyManagerInterface>(
 				KeyManagerInterface.class,
 				UserManagerQueueNames.getKeyManagerInterfaceQueue(), 5000);
 
-		System.out.print("!!3!!");
-		
 		keyManager = clientKeyInfo.init();
-		
-		System.out.print("!!4!!");
-		
+
 		RabbitRPCProxy<ContainerManagerInterface> containerManagerInfo = new RabbitRPCProxy<ContainerManagerInterface>(
 				ContainerManagerInterface.class,
 				ContainerManagerQueueNames
 						.getContainerManagerInterfaceQueryQueue(), 5000);
-		
-		System.out.print("!!5!!");
-		
+
 		containerManager = containerManagerInfo.init();
-		
-		System.out.print("!!6!!");
 		
 		RabbitRPCProxy<AnalyzerInterface> analyzerInfo = new RabbitRPCProxy<AnalyzerInterface>(
 				AnalyzerInterface.class,
 				AnalyzerQueueNames
 						.getAnalyzerInterfaceQueue(), 5000);
 
-		System.out.print("!!7!!");
-		
 		analyzer = analyzerInfo.init();
-		
-		System.out.print("!!8!!");
 		
 		RabbitRPCProxy<GamificationInterface> gamificationInfo = new RabbitRPCProxy<GamificationInterface>(
 				GamificationInterface.class,
 				GamificationQueueNames
 						.getGamificationInterfaceQueue(), 5000);
-		
-		System.out.print("!!9!!");
 
 		gamification = gamificationInfo.init();
 
