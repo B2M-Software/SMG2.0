@@ -65,35 +65,6 @@
 		<version>1.8.4</version>
 	</dependency>
 
-	<!-- Pax Exam Dependencies -->
-	<dependency>
-		<groupId>org.ops4j.pax.exam</groupId>
-		<artifactId>pax-exam-container-native</artifactId>
-		<version>${exam.version}</version>
-		<scope>test</scope>
-	</dependency>
-
-	<dependency>
-		<groupId>org.ops4j.pax.exam</groupId>
-		<artifactId>pax-exam-junit4</artifactId>
-		<version>${exam.version}</version>
-		<scope>test</scope>
-	</dependency>
-
-	<dependency>
-		<groupId>org.ops4j.pax.exam</groupId>
-		<artifactId>pax-exam-link-mvn</artifactId>
-		<version>${exam.version}</version>
-		<scope>test</scope>
-	</dependency>
-
-	<dependency>
-		<groupId>org.ops4j.pax.url</groupId>
-		<artifactId>pax-url-aether</artifactId>
-		<version>${url.version}</version>
-		<scope>test</scope>
-	</dependency>
-
 	<dependency>
 		<groupId>org.apache.felix</groupId>
 		<artifactId>org.apache.felix.framework</artifactId>

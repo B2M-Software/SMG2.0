@@ -325,8 +325,8 @@
 		<module>actuatorclient.froeschl.impl</module>
 		<module>actuatorclient.froeschl.test</module>
 		
-		<module>actuatorclient.enocean.impl</module> 
-		<module>actuatorclient.enocean.test</module>
+		<!-- <module>actuatorclient.enocean.impl</module> 
+		<module>actuatorclient.enocean.test</module>  -->
 		
 		<!-- <module>actuatorclient.energybuffer.impl</module> -->
 
@@ -367,8 +367,10 @@
 		<module>websocket.api</module>
 		<module>websocket.impl</module>
 		<module>websocket.test</module>
-
-		<module>client.openweathermap.impl</module>
+		
+		<module>ems.api</module>
+		<module>ems.impl</module>
+		<!--  <module>ems.test</module> -->
 	</modules>
 
 
