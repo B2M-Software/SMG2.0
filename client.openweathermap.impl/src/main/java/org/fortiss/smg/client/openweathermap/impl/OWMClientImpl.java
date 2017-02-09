@@ -46,7 +46,7 @@ public class OWMClientImpl implements OWMConfigResources, IActuatorClient{
 		this.cityID = cityId;
 		this.targetURI = TARGET_URL + TARGET_PATH_CITY + "?" + QUERYPARAM_ID + "="
 		+ this.cityID + QUERYPARAM_APPID + "=" + QUERYPARAM_APPID_VALUE;
-			
+			 
 	}
 	
 	public void loadResults(String currentCityId){

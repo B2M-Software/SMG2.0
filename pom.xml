@@ -371,6 +371,9 @@
 		<module>ems.api</module>
 		<module>ems.impl</module>
 		<!--  <module>ems.test</module> -->
+		
+		<module>client.openweathermap.impl</module>
+		
 	</modules>
 
 
