@@ -134,4 +134,8 @@ public class WrapperConfig {
 		this.subdevices = subdevices;
 	}
 	
+	// Syed Ashfaq Hussain Shah ----------------------------- To check the available configurations.
+	public String configToString(){
+		return this.key +":"+ this.wrapperID +":"+ this.wrapperName +":"+ this.protocol +":"+ this.host +":"+ this.port +":"+ this.path +":"+ this.username +":"+ this.password +":"+ this.pollingfrequency +":"+ this.subdevices.toString();
+	}
 }

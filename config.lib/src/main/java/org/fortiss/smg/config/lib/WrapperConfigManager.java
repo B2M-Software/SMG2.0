@@ -63,9 +63,10 @@ public class WrapperConfigManager {
 	}
 	
 	private void parseConfig() {
-		System.out.println(fileName);
+		//System.out.println(fileName);
 		
 		try {
+			
 			File fXmlFile = new File(fileName);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -124,7 +125,7 @@ public class WrapperConfigManager {
 							polling,
 							subdevices
 							);
-					
+					logger.info(config.configToString()); // Syed Ashfaq Hussain Shah
 					if (wrapperConfigList.containsKey(key)) {
 						wrapperConfigList.get(key).add(config);
 					}

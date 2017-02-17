@@ -54,7 +54,7 @@ public class ActuatorMasterImpl implements IActuatorMaster {
 			.getInstance();
 
 	public ActuatorMasterImpl(String configpath) {
-
+		logger.info("Wrapperconfig Path:: " + configpath);
 		clients = new ConcurrentHashMap<String, String>();
 		notRespondingClients = new ConcurrentHashMap<String, Integer>();
 		listeners = new ConcurrentHashMap<String, String>();

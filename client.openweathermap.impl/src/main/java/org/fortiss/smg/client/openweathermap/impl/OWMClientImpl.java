@@ -4,6 +4,10 @@
 package org.fortiss.smg.client.openweathermap.impl;
 
 
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import javax.json.JsonObject;
@@ -16,9 +20,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
-
+import org.slf4j.LoggerFactory;
 import org.fortiss.smg.actuatormaster.api.IActuatorClient;
+import org.fortiss.smg.actuatormaster.api.IActuatorMaster;
+import org.fortiss.smg.actuatormaster.api.events.DeviceEvent;
 import org.fortiss.smg.client.openweathermap.impl.api.OWMConfigResources;
+import org.fortiss.smg.containermanager.api.ContainerManagerInterface;
+import org.fortiss.smg.containermanager.api.devices.DeviceContainer;
 import org.fortiss.smg.containermanager.api.devices.DeviceId;
 import org.fortiss.smg.smgschemas.commands.DoubleCommand;
 
@@ -29,6 +37,125 @@ import org.fortiss.smg.smgschemas.commands.DoubleCommand;
  */
 public class OWMClientImpl implements OWMConfigResources, IActuatorClient{
 
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(OWMClientImpl.class);
+	private IActuatorMaster master;
+	private String clientId;
+	private ScheduledExecutorService executor;
+	private int pollFrequency;
+	private String host;
+	
+	// TODO:
+	// Need to change to wrapperID -----?????????????????????
+	private String wrapperTag;
+	
+	private ContainerManagerInterface broker;
+	
+	ArrayList<DeviceContainer> devices = new ArrayList<DeviceContainer>();
+	
+	
+	OWMClientImpl(String protocolNHost, String port, String wrapperID, int pollFreq, String userNname, String passWord){
+		this.host = protocolNHost;
+		this.wrapperTag = wrapperID;		
+		this.pollFrequency = pollFreq;
+		
+		//loadStaticDevs(wrapperTag);
+	}
+	
+	/*
+	Getters and Setters
+	*/
+	public void setPollFrequency(int pollFrequency) {
+		this.pollFrequency = pollFrequency;
+	}
+
+	public void setMaster(IActuatorMaster master) {
+		this.master = master;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public void setWrapperTag(String wrapperTag) {
+		this.wrapperTag = wrapperTag;
+	}
+	
+	public IActuatorMaster getMaster() {
+		return this.master;
+	}
+
+	public int getPollFrequency() {
+		return this.pollFrequency;
+	}
+
+	public String getWrapperTag() {
+		return this.wrapperTag;
+	}
+	
+	public String getHost() {
+		return this.host;
+	}
+
+	/*
+	* To activate and deactivate this OWMclient	module.
+	*/
+public synchronized void activate() {
+		sendNewDeviceEvents();
+		
+		executor = Executors.newSingleThreadScheduledExecutor();
+		executor.scheduleAtFixedRate(new OWMClientLooper(this), 0,
+				getPollFrequency(), TimeUnit.SECONDS);
+	}
+
+	public synchronized void deactivate() {
+		executor.shutdown();
+		try {
+			executor.awaitTermination(1, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/*
+	* To send device Events
+	*/
+	private void sendNewDeviceEvents() {
+		for (DeviceContainer dev : devices) {
+			try {
+				//master.sendDeviceEvent(dev, this.clientId);
+				logger.info("Try to send " + dev.getDeviceId()
+						+ " to master");
+				master.sendDeviceEvent(new DeviceEvent(dev), this.clientId);
+				logger.info("Sent " + dev.getDeviceId()
+						+ " to master");
+				
+				
+			} catch (TimeoutException e) {
+				logger.debug("Failed to send " + dev.getDeviceId()
+						+ " to master");
+			}
+		}
+	}
+	
+	
+	/*
+	* Inherited methods to override
+	*/
+	@Override
+	public void onDoubleCommand(DoubleCommand command, DeviceId dev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isComponentAlive() throws TimeoutException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	//////////////////////--------------------------------------------------------
+	
 	// "api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=1111111111";
 	
 	private String cityID;
@@ -37,10 +164,6 @@ public class OWMClientImpl implements OWMConfigResources, IActuatorClient{
 	private String resultObj = null;
 	
 	private JsonObject jsonOWMData = null;
-	
-//	public OWMClientImpl(String cityId){		
-//		prepareURI(cityId);		
-//	}
 	
 	private void prepareURI(String cityId){
 		this.cityID = cityId;
@@ -94,16 +217,6 @@ public class OWMClientImpl implements OWMConfigResources, IActuatorClient{
 		return Integer.parseInt(jsonOWMData.get("cod").toString());		
 	}
 
-	@Override
-	public void onDoubleCommand(DoubleCommand command, DeviceId dev) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public boolean isComponentAlive() throws TimeoutException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }
